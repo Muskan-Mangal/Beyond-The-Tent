@@ -1,0 +1,36 @@
+<% include partials/header %>
+<h1>Show page!!</h1>
+
+<div class="container">
+  <h4><%= camp.name%></h4>
+  <img src="<%= camp.image %>" >
+  <br>
+  <p>created by -
+    <em><%= camp.author.username %></em>
+  </p>
+  <% if(currentUser && camp.author.id.equals(currentUser._id)) { %>
+  <a href="/campgrounds/<%= camp._id %>/edit" class="ui blue basic button">Edit Info!</a>
+  <form action="/campgrounds/<%= camp._id%>?_method=delete" method="post" style="display:inline;">
+    <button class="ui red basic button" style="display:inline;">DELETE</button>
+  </form>  <br>
+<% } %>
+    <a href="/campgrounds">Go Back!</a>
+    <br>
+  <a href="/campgrounds/<%= camp._id %>/comments/new">Add New Comment</a>
+  <% camp.comments.forEach(function(comment){ %>
+
+        <p><strong> <%= comment.author.username %> </strong> - <%=  comment.text %> </p>
+      <%  if(currentUser && comment.author.id.equals(currentUser._id)) { %>
+
+        <form action="/campgrounds/<%= camp._id %>/comments/<%= comment._id %>?_method=delete" method="post" style="display:inline;">
+          <button class="ui red basic button" style="display:inline;">DELETE</button>
+        </form>
+        <form action="/campgrounds/<%= camp._id %>/comments/<%= comment._id %>/edit" method="get" style="display:inline;">
+          <button class="ui blue basic button" style="display:inline;">Edit</button>
+        </form>
+    <% } %>
+  <% }) %>
+<br>
+<br>
+</div>
+<% include partials/footer %>
